@@ -2,6 +2,7 @@ package structured
 
 import (
 	"errors"
+	"github.com/StrikerSK/go-arrays/arrays"
 	"log"
 )
 
@@ -68,7 +69,7 @@ func (r StructArray) Get(searchedValue interface{}) (interface{}, error) {
 	}
 
 	if index == 0 {
-		return nil, errors.New("could not find searched structure")
+		return nil, errors.New(arrays.ObjectNotFound)
 	} else {
 		return r[index], nil
 	}

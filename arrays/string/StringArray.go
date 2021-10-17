@@ -46,7 +46,7 @@ func (r StringArray) Get(searchedValue interface{}) (interface{}, error) {
 	}
 
 	if index == 0 {
-		return nil, errors.New("could not find searched structure")
+		return nil, errors.New(arrays.ObjectNotFound)
 	} else {
 		return r[index], nil
 	}

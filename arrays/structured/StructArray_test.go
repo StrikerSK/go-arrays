@@ -93,7 +93,7 @@ func Test_StructGet(t *testing.T) {
 func Test_StructGetNotFound(t *testing.T) {
 	_, err := testArray.Get("Out")
 	assert.Error(t, err)
-	assert.Equal(t, "could not find searched structure", err.Error())
+	assert.Equal(t, arrays.ObjectNotFound, err.Error())
 }
 
 func Test_StructGetTypeMismatch(t *testing.T) {
