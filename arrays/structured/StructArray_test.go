@@ -83,21 +83,15 @@ func Test_StructArrayIndexTypeMismatch(t *testing.T) {
 	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
 }
 
-func Test_StructGet(t *testing.T) {
-	output, err := testArray.Get("Xyz")
+func Test_GetByIndex(t *testing.T) {
+	output, err := testArray.Get(2)
 	assert.Nil(t, err)
 	assert.Equal(t, "Xyz", output.(TestStructure).Name)
 	assert.Equal(t, 34567, output.(TestStructure).Number)
 }
 
-func Test_StructGetNotFound(t *testing.T) {
-	_, err := testArray.Get("Out")
+func Test_GetByIndexNotFound(t *testing.T) {
+	_, err := testArray.Get(4)
 	assert.Error(t, err)
-	assert.Equal(t, arrays.ObjectNotFound, err.Error())
-}
-
-func Test_StructGetTypeMismatch(t *testing.T) {
-	_, err := testArray.Get(12345)
-	assert.Error(t, err)
-	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
+	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
 }

@@ -53,11 +53,5 @@ func Test_GetByIndex(t *testing.T) {
 func Test_GetByIndexNotFound(t *testing.T) {
 	_, err := testStringArray.Get(10)
 	assert.Error(t, err)
-	assert.Equal(t, "index out of bounds", err.Error())
-}
-
-func Test_GetByIndexNotValid(t *testing.T) {
-	_, err := testStringArray.Get("1")
-	assert.Error(t, err)
-	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
+	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
 }

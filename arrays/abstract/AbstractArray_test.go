@@ -75,3 +75,15 @@ func Test_StringArrayIndexSearchIncompatibleType(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t, 0, output)
 }
+
+func Test_GetByIndex(t *testing.T) {
+	output, err := testAbstractArray.Get(1)
+	assert.Nil(t, err)
+	assert.Equal(t, "Bar", output)
+}
+
+func Test_GetByIndexNotFound(t *testing.T) {
+	_, err := testAbstractArray.Get(10)
+	assert.Error(t, err)
+	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
+}

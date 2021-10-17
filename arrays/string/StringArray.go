@@ -39,17 +39,11 @@ func (r StringArray) FindIndex(searchedValue interface{}) (int, error) {
 	return 0, nil
 }
 
-func (r StringArray) Get(index interface{}) (interface{}, error) {
-	indexValue, ok := index.(int)
-	if !ok {
-		log.Println("Parameter type is not of Int type")
-		return 0, errors.New(arrays.MismatchedTypeError)
-	}
-
-	if indexValue > len(r) || indexValue < 0 {
+func (r StringArray) Get(index int) (interface{}, error) {
+	if index > len(r) || index < 0 {
 		log.Println("Provided index parameter is out of bounds")
-		return 0, errors.New("index out of bounds")
+		return 0, errors.New(arrays.OutOfBoundsError)
 	} else {
-		return r[indexValue], nil
+		return r[index], nil
 	}
 }

@@ -65,14 +65,10 @@ func (r AbstractArray) FindIndex(searchedValue interface{}) (int, error) {
 	return 0, nil
 }
 
-func (r AbstractArray) Get(searchedValue interface{}) (interface{}, error) {
-	index, err := r.FindIndex(searchedValue)
-	if err != nil {
-		return nil, err
-	}
-
-	if index == 0 {
-		return nil, errors.New(arrays.ObjectNotFound)
+func (r AbstractArray) Get(index int) (interface{}, error) {
+	if index > len(r) || index < 0 {
+		log.Println("Provided index parameter is out of bounds")
+		return 0, errors.New(arrays.OutOfBoundsError)
 	} else {
 		return r[index], nil
 	}
