@@ -1,6 +1,7 @@
 package string
 
 import (
+	"github.com/StrikerSK/go-arrays/arrays"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -41,4 +42,22 @@ func Test_StringArrayIndexZeroResults(t *testing.T) {
 	output, err := testStringArray.FindIndex("Out")
 	assert.Nil(t, err)
 	assert.Equal(t, 0, output)
+}
+
+func Test_GetByIndex(t *testing.T) {
+	output, err := testStringArray.Get(1)
+	assert.Nil(t, err)
+	assert.Equal(t, "Bar", output)
+}
+
+func Test_GetByIndexNotFound(t *testing.T) {
+	_, err := testStringArray.Get(10)
+	assert.Error(t, err)
+	assert.Equal(t, "index out of bounds", err.Error())
+}
+
+func Test_GetByIndexNotValid(t *testing.T) {
+	_, err := testStringArray.Get("1")
+	assert.Error(t, err)
+	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
 }
