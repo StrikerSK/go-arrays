@@ -62,7 +62,7 @@ func (r StructArray) FindIndex(searchedValue interface{}) (int, error) {
 	return 0, nil
 }
 
-func (r StructArray) Get(index int) (interface{}, error) {
+func (r StructArray) GetByIndex(index int) (interface{}, error) {
 	if index > len(r) || index < 0 {
 		log.Println("Provided index parameter is out of bounds")
 		return 0, errors.New(arrays.OutOfBoundsError)
@@ -79,5 +79,22 @@ func (r *StructArray) Add(newValue interface{}) error {
 	}
 
 	*r = append(*r, compatibleObj)
+	return nil
+}
+
+func (r *StructArray) RemoveByIndex(index int) error {
+	sliceLength := len(*r)
+
+	if index > sliceLength || index < 0 {
+		log.Println("Provided index parameter is out of bounds")
+		return errors.New(arrays.OutOfBoundsError)
+	}
+
+	tmp := make([]IStruct, sliceLength)
+	copy(tmp, *r)
+
+	tmp[index] = tmp[len(tmp)-1]
+	*r = tmp[:len(tmp)-1]
+
 	return nil
 }

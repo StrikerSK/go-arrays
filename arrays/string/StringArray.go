@@ -34,10 +34,10 @@ func (r StringArray) FindIndex(searchedValue interface{}) (int, error) {
 		}
 	}
 
-	return 0, nil
+	return 0, errors.New("searched value not found")
 }
 
-func (r StringArray) Get(index int) (interface{}, error) {
+func (r StringArray) GetByIndex(index int) (interface{}, error) {
 	if index > len(r) || index < 0 {
 		log.Println("Provided index parameter is out of bounds")
 		return 0, errors.New(arrays.OutOfBoundsError)
@@ -52,5 +52,22 @@ func (r *StringArray) Add(newValue interface{}) error {
 	}
 
 	*r = append(*r, newValue.(string))
+	return nil
+}
+
+func (r *StringArray) RemoveByIndex(index int) error {
+	sliceLength := len(*r)
+
+	if index > sliceLength || index < 0 {
+		log.Println("Provided index parameter is out of bounds")
+		return errors.New(arrays.OutOfBoundsError)
+	}
+
+	tmp := make([]string, sliceLength)
+	copy(tmp, *r)
+
+	tmp[index] = tmp[len(tmp)-1]
+	*r = tmp[:len(tmp)-1]
+
 	return nil
 }

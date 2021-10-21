@@ -76,28 +76,28 @@ func Test_StructArrayIndexTypeMismatch(t *testing.T) {
 }
 
 func Test_GetByFirstIndex(t *testing.T) {
-	output, err := testArray.Get(0)
+	output, err := testArray.GetByIndex(0)
 	assert.Nil(t, err)
 	assert.Equal(t, "Foo", output.(TestStructure).Name)
 	assert.Equal(t, 12345, output.(TestStructure).Number)
 }
 
 func Test_GetByIndex(t *testing.T) {
-	output, err := testArray.Get(1)
+	output, err := testArray.GetByIndex(1)
 	assert.Nil(t, err)
 	assert.Equal(t, "Bar", output.(TestStructure).Name)
 	assert.Equal(t, 23456, output.(TestStructure).Number)
 }
 
 func Test_GetByLastIndex(t *testing.T) {
-	output, err := testArray.Get(len(testArray) - 1)
+	output, err := testArray.GetByIndex(len(testArray) - 1)
 	assert.Nil(t, err)
 	assert.Equal(t, "Xyz", output.(TestStructure).Name)
 	assert.Equal(t, 34567, output.(TestStructure).Number)
 }
 
 func Test_GetByIndexNotFound(t *testing.T) {
-	_, err := testArray.Get(4)
+	_, err := testArray.GetByIndex(4)
 	assert.Error(t, err)
 	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
 }
@@ -120,4 +120,19 @@ func Test_AddToSliceIncompatible(t *testing.T) {
 	err := testArray.Add("123")
 	assert.NotNil(t, err)
 	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
+}
+
+func Test_RemoveFromSlice(t *testing.T) {
+	err := testArray.RemoveByIndex(1)
+	assert.Nil(t, err)
+
+	isPresent, err := testArray.IsPresent("Bar")
+	assert.Nil(t, err)
+	assert.False(t, isPresent)
+}
+
+func Test_RemoveFromSliceOutOfBounds(t *testing.T) {
+	err := testArray.RemoveByIndex(10)
+	assert.NotNil(t, err)
+	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
 }

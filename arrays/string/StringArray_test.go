@@ -45,25 +45,25 @@ func Test_StringArrayIndexZeroResults(t *testing.T) {
 }
 
 func Test_GetByFirstIndex(t *testing.T) {
-	output, err := testStringArray.Get(0)
+	output, err := testStringArray.GetByIndex(0)
 	assert.Nil(t, err)
 	assert.Equal(t, "Foo", output)
 }
 
 func Test_GetByIndex(t *testing.T) {
-	output, err := testStringArray.Get(1)
+	output, err := testStringArray.GetByIndex(1)
 	assert.Nil(t, err)
 	assert.Equal(t, "Bar", output)
 }
 
 func Test_GetByLastIndex(t *testing.T) {
-	output, err := testStringArray.Get(len(testStringArray) - 1)
+	output, err := testStringArray.GetByIndex(len(testStringArray) - 1)
 	assert.Nil(t, err)
 	assert.Equal(t, "Xyz", output)
 }
 
 func Test_GetByIndexNotFound(t *testing.T) {
-	_, err := testStringArray.Get(10)
+	_, err := testStringArray.GetByIndex(10)
 	assert.Error(t, err)
 	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
 }
@@ -84,4 +84,19 @@ func Test_AddToSliceIncompatible(t *testing.T) {
 	err := testStringArray.Add(newValue)
 	assert.NotNil(t, err)
 	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
+}
+
+func Test_RemoveFromSlice(t *testing.T) {
+	err := testStringArray.RemoveByIndex(1)
+	assert.Nil(t, err)
+
+	isPresent, err := testStringArray.IsPresent("Bar")
+	assert.Nil(t, err)
+	assert.False(t, isPresent)
+}
+
+func Test_RemoveFromSliceOutOfBounds(t *testing.T) {
+	err := testStringArray.RemoveByIndex(10)
+	assert.NotNil(t, err)
+	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
 }
