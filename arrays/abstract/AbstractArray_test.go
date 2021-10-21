@@ -18,24 +18,24 @@ func Test_AssertArrayType(t *testing.T) {
 }
 
 func Test_AbstractEqualType(t *testing.T) {
-	assert.Nil(t, testAbstractArray.ValidateType("Hello"))
+	assert.Nil(t, testAbstractArray.validateType("Hello"))
 }
 
 func Test_AbstractStructParamType(t *testing.T) {
-	err := testAbstractArray.ValidateType(testStruct{Name: "Foo"})
+	err := testAbstractArray.validateType(testStruct{Name: "Foo"})
 	assert.Error(t, err)
 	assert.Equal(t, arrays.StructUseError, err.Error())
 }
 
 func Test_AbstractStructArrayType(t *testing.T) {
 	s := AbstractArray{testStruct{Name: "Foo"}, testStruct{Name: "Bar"}}
-	err := s.ValidateType("Foo")
+	err := s.validateType("Foo")
 	assert.Error(t, err)
 	assert.Equal(t, arrays.StructUseError, err.Error())
 }
 
 func Test_AbstractNonEqualType(t *testing.T) {
-	err := testAbstractArray.ValidateType(5)
+	err := testAbstractArray.validateType(5)
 	assert.Error(t, err)
 	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
 }
@@ -76,10 +76,22 @@ func Test_StringArrayIndexSearchIncompatibleType(t *testing.T) {
 	assert.Equal(t, 0, output)
 }
 
+func Test_GetByFirstIndex(t *testing.T) {
+	output, err := testAbstractArray.Get(0)
+	assert.Nil(t, err)
+	assert.Equal(t, "Foo", output)
+}
+
 func Test_GetByIndex(t *testing.T) {
 	output, err := testAbstractArray.Get(1)
 	assert.Nil(t, err)
 	assert.Equal(t, "Bar", output)
+}
+
+func Test_GetByLastIndex(t *testing.T) {
+	output, err := testAbstractArray.Get(len(testAbstractArray) - 1)
+	assert.Nil(t, err)
+	assert.Equal(t, "Xyz", output)
 }
 
 func Test_GetByIndexNotFound(t *testing.T) {

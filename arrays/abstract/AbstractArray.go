@@ -7,14 +7,15 @@ import (
 	"reflect"
 )
 
-// AbstractArray - Defined for core types as string, int, int8, int16, int32,...
+// AbstractArray - defines array for core types such as string, int, int8, int16, int32,...
 type AbstractArray []interface{}
 
+// ArrayType - defined base on first element
 func (r AbstractArray) ArrayType() string {
 	return reflect.TypeOf(r[0]).Name()
 }
 
-func (r AbstractArray) ValidateType(searchedValue interface{}) error {
+func (r AbstractArray) validateType(searchedValue interface{}) error {
 	if len(r) == 0 {
 		log.Println("Empty slice has been found")
 		return errors.New("slice is empty")
@@ -38,7 +39,7 @@ func (r AbstractArray) ValidateType(searchedValue interface{}) error {
 }
 
 func (r AbstractArray) IsPresent(searchedValue interface{}) (bool, error) {
-	if err := r.ValidateType(searchedValue); err != nil {
+	if err := r.validateType(searchedValue); err != nil {
 		return false, err
 	}
 
@@ -52,7 +53,7 @@ func (r AbstractArray) IsPresent(searchedValue interface{}) (bool, error) {
 }
 
 func (r AbstractArray) FindIndex(searchedValue interface{}) (int, error) {
-	if err := r.ValidateType(searchedValue); err != nil {
+	if err := r.validateType(searchedValue); err != nil {
 		return 0, err
 	}
 

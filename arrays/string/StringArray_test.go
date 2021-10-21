@@ -44,10 +44,22 @@ func Test_StringArrayIndexZeroResults(t *testing.T) {
 	assert.Equal(t, 0, output)
 }
 
+func Test_GetByFirstIndex(t *testing.T) {
+	output, err := testStringArray.Get(0)
+	assert.Nil(t, err)
+	assert.Equal(t, "Foo", output)
+}
+
 func Test_GetByIndex(t *testing.T) {
 	output, err := testStringArray.Get(1)
 	assert.Nil(t, err)
 	assert.Equal(t, "Bar", output)
+}
+
+func Test_GetByLastIndex(t *testing.T) {
+	output, err := testStringArray.Get(len(testStringArray) - 1)
+	assert.Nil(t, err)
+	assert.Equal(t, "Xyz", output)
 }
 
 func Test_GetByIndexNotFound(t *testing.T) {

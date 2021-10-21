@@ -75,8 +75,22 @@ func Test_StructArrayIndexTypeMismatch(t *testing.T) {
 	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
 }
 
+func Test_GetByFirstIndex(t *testing.T) {
+	output, err := testArray.Get(0)
+	assert.Nil(t, err)
+	assert.Equal(t, "Foo", output.(TestStructure).Name)
+	assert.Equal(t, 12345, output.(TestStructure).Number)
+}
+
 func Test_GetByIndex(t *testing.T) {
-	output, err := testArray.Get(2)
+	output, err := testArray.Get(1)
+	assert.Nil(t, err)
+	assert.Equal(t, "Bar", output.(TestStructure).Name)
+	assert.Equal(t, 23456, output.(TestStructure).Number)
+}
+
+func Test_GetByLastIndex(t *testing.T) {
+	output, err := testArray.Get(len(testArray) - 1)
 	assert.Nil(t, err)
 	assert.Equal(t, "Xyz", output.(TestStructure).Name)
 	assert.Equal(t, 34567, output.(TestStructure).Number)
