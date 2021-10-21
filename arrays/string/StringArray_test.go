@@ -67,3 +67,21 @@ func Test_GetByIndexNotFound(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
 }
+
+func Test_AddToSlice(t *testing.T) {
+	newValue := "NewOne"
+
+	err := testStringArray.Add(newValue)
+	assert.Nil(t, err)
+
+	isPresent, err := testStringArray.IsPresent(newValue)
+	assert.Nil(t, err)
+	assert.True(t, isPresent)
+}
+
+func Test_AddToSliceIncompatible(t *testing.T) {
+	newValue := 55
+	err := testStringArray.Add(newValue)
+	assert.NotNil(t, err)
+	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
+}

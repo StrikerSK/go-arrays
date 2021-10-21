@@ -101,3 +101,23 @@ func Test_GetByIndexNotFound(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
 }
+
+func Test_AddToSlice(t *testing.T) {
+	newValue := TestStructure{
+		Name:   "NewValue",
+		Number: 911,
+	}
+
+	err := testArray.Add(newValue)
+	assert.Nil(t, err)
+
+	isPresent, err := testArray.IsPresent(newValue.Name)
+	assert.Nil(t, err)
+	assert.True(t, isPresent)
+}
+
+func Test_AddToSliceIncompatible(t *testing.T) {
+	err := testArray.Add("123")
+	assert.NotNil(t, err)
+	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
+}

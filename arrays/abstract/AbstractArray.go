@@ -74,3 +74,11 @@ func (r AbstractArray) Get(index int) (interface{}, error) {
 		return r[index], nil
 	}
 }
+
+func (r *AbstractArray) Add(newValue interface{}) error {
+	if err := r.validateType(newValue); err != nil {
+		return err
+	}
+	*r = append(*r, newValue)
+	return nil
+}

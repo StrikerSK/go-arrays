@@ -45,3 +45,12 @@ func (r StringArray) Get(index int) (interface{}, error) {
 		return r[index], nil
 	}
 }
+
+func (r *StringArray) Add(newValue interface{}) error {
+	if err := arrays.CheckExpectedType(newValue, reflect.String); err != nil {
+		return err
+	}
+
+	*r = append(*r, newValue.(string))
+	return nil
+}

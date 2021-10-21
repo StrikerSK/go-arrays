@@ -70,3 +70,14 @@ func (r StructArray) Get(index int) (interface{}, error) {
 		return r[index], nil
 	}
 }
+
+func (r *StructArray) Add(newValue interface{}) error {
+	compatibleObj, ok := newValue.(IStruct)
+	if !ok {
+		log.Println("value is not of type IStruct")
+		return errors.New(arrays.MismatchedTypeError)
+	}
+
+	*r = append(*r, compatibleObj)
+	return nil
+}
