@@ -1,10 +1,8 @@
 package structured
 
 import (
-	"errors"
 	"github.com/StrikerSK/go-arrays/arrays"
 	"github.com/stretchr/testify/assert"
-	"reflect"
 	"testing"
 )
 
@@ -21,15 +19,9 @@ func (r TestStructure) CompareValues(input interface{}) (bool, error) {
 	return r.Name == input, nil
 }
 
-func (r TestStructure) CompareTypes(input interface{}) error {
-	arrayType := reflect.TypeOf(r.Name)
-	paramType := reflect.TypeOf(input)
-
-	if paramType.Kind() != arrayType.Kind() {
-		return errors.New(arrays.MismatchedTypeError)
-	} else {
-		return nil
-	}
+func (r TestStructure) CompareTypes(input interface{}) (err error) {
+	err = arrays.ValidateArray(input, r.Name)
+	return
 }
 
 var testArray = StructArray{
@@ -61,7 +53,7 @@ func Test_StructArrayNotFound(t *testing.T) {
 
 func Test_StructArrayTypeMismatch(t *testing.T) {
 	_, err := testArray.IsPresent(123)
-	assert.Error(t, err)
+	assert.NotNil(t, err)
 	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
 }
 

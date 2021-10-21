@@ -10,9 +10,8 @@ import (
 type StringArray []string
 
 func (r StringArray) IsPresent(searchedValue interface{}) (bool, error) {
-	if reflect.TypeOf(searchedValue).Kind() != reflect.String {
-		log.Println("Parameter type is not of string type")
-		return false, errors.New(arrays.MismatchedTypeError)
+	if err := arrays.CheckExpectedType(searchedValue, reflect.String); err != nil {
+		return false, err
 	}
 
 	for index := range r {
@@ -25,9 +24,8 @@ func (r StringArray) IsPresent(searchedValue interface{}) (bool, error) {
 }
 
 func (r StringArray) FindIndex(searchedValue interface{}) (int, error) {
-	if reflect.TypeOf(searchedValue).Kind() != reflect.String {
-		log.Println("Parameter type is not of string type")
-		return 0, errors.New(arrays.MismatchedTypeError)
+	if err := arrays.CheckExpectedType(searchedValue, reflect.String); err != nil {
+		return 0, err
 	}
 
 	for index := range r {
