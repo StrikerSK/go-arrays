@@ -67,14 +67,16 @@ func Test_AbstractArrayIndexSearch(t *testing.T) {
 
 func Test_StringArrayIndexSearchNotFound(t *testing.T) {
 	output, err := stringArray.FindIndex("Hello")
-	assert.Nil(t, err)
-	assert.Equal(t, 0, output)
+
+	assert.NotNil(t, err)
+	assert.Equal(t, arrays.NotFoundError, err.Error())
+	assert.Equal(t, -1, output)
 }
 
 func Test_StringArrayIndexSearchIncompatibleType(t *testing.T) {
 	output, err := stringArray.FindIndex(999)
 	assert.Error(t, err)
-	assert.Equal(t, 0, output)
+	assert.Equal(t, -1, output)
 }
 
 func Test_GetByFirstIndex(t *testing.T) {

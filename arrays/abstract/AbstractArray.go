@@ -42,23 +42,9 @@ func (r AbstractArray) validateType(searchedValue interface{}) error {
 	return nil
 }
 
-func (r AbstractArray) IsPresent(searchedValue interface{}) (bool, error) {
-	if err := r.validateType(searchedValue); err != nil {
-		return false, err
-	}
-
-	for index := range r {
-		if r[index] == searchedValue {
-			return true, nil
-		}
-	}
-
-	return false, nil
-}
-
 func (r AbstractArray) FindIndex(searchedValue interface{}) (int, error) {
 	if err := r.validateType(searchedValue); err != nil {
-		return 0, err
+		return -1, err
 	}
 
 	for index := range r {
@@ -67,7 +53,17 @@ func (r AbstractArray) FindIndex(searchedValue interface{}) (int, error) {
 		}
 	}
 
-	return 0, nil
+	return -1, errors.New(arrays.NotFoundError)
+}
+
+func (r AbstractArray) IsPresent(searchedValue interface{}) (bool, error) {
+	index, err := r.FindIndex(searchedValue)
+
+	if err != nil && err.Error() != arrays.NotFoundError {
+		return false, err
+	}
+
+	return index >= 0, nil
 }
 
 func (r AbstractArray) GetByIndex(index int) (interface{}, error) {

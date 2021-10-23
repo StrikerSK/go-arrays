@@ -40,8 +40,10 @@ func Test_StringArrayFoundIndexMismatchType(t *testing.T) {
 
 func Test_StringArrayIndexZeroResults(t *testing.T) {
 	output, err := testStringArray.FindIndex("Out")
-	assert.Nil(t, err)
-	assert.Equal(t, 0, output)
+
+	assert.NotNil(t, err)
+	assert.Equal(t, arrays.NotFoundError, err.Error())
+	assert.Equal(t, -1, output)
 }
 
 func Test_GetByFirstIndex(t *testing.T) {

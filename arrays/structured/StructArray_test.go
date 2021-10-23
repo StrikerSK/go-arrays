@@ -67,8 +67,10 @@ func Test_StructArrayIndex(t *testing.T) {
 
 func Test_StructArrayIndexNotFound(t *testing.T) {
 	output, err := testArray.FindIndex("Out")
-	assert.Nil(t, err)
-	assert.Equal(t, 0, output)
+
+	assert.NotNil(t, err)
+	assert.Equal(t, arrays.NotFoundError, err.Error())
+	assert.Equal(t, -1, output)
 }
 
 func Test_StructArrayIndexTypeMismatch(t *testing.T) {

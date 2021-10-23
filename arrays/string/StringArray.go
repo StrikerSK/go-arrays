@@ -9,23 +9,9 @@ import (
 
 type StringArray []string
 
-func (r StringArray) IsPresent(searchedValue interface{}) (bool, error) {
-	if err := arrays.CheckExpectedType(searchedValue, reflect.String); err != nil {
-		return false, err
-	}
-
-	for index := range r {
-		if r[index] == searchedValue {
-			return true, nil
-		}
-	}
-
-	return false, nil
-}
-
 func (r StringArray) FindIndex(searchedValue interface{}) (int, error) {
 	if err := arrays.CheckExpectedType(searchedValue, reflect.String); err != nil {
-		return 0, err
+		return -1, err
 	}
 
 	for index := range r {
@@ -34,7 +20,17 @@ func (r StringArray) FindIndex(searchedValue interface{}) (int, error) {
 		}
 	}
 
-	return 0, errors.New("searched value not found")
+	return -1, errors.New(arrays.NotFoundError)
+}
+
+func (r StringArray) IsPresent(searchedValue interface{}) (bool, error) {
+	index, err := r.FindIndex(searchedValue)
+
+	if err != nil && err.Error() != arrays.NotFoundError {
+		return false, err
+	}
+
+	return index >= 0, nil
 }
 
 func (r StringArray) GetByIndex(index int) (interface{}, error) {
