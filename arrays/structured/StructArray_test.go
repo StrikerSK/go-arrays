@@ -3,6 +3,8 @@ package structured
 import (
 	"github.com/StrikerSK/go-arrays/arrays"
 	"github.com/stretchr/testify/assert"
+	"log"
+	"reflect"
 	"testing"
 )
 
@@ -135,4 +137,8 @@ func Test_RemoveFromSliceOutOfBounds(t *testing.T) {
 	err := testArray.RemoveByIndex(10)
 	assert.NotNil(t, err)
 	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
+}
+
+func Test_RUN(t *testing.T) {
+	log.Println(reflect.TypeOf([]string{"Hello", "World"}).Elem())
 }

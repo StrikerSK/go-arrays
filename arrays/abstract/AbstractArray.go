@@ -12,6 +12,10 @@ type AbstractArray []interface{}
 
 // ArrayType - defined base on first element
 func (r AbstractArray) ArrayType() string {
+	if len(r) == 0 {
+		return "empty"
+	}
+
 	return reflect.TypeOf(r[0]).Name()
 }
 
