@@ -1,4 +1,4 @@
-package arrays
+package exception
 
 const (
 	MismatchedTypeError = "mismatched type of parameter"

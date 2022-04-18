@@ -1,7 +1,7 @@
 package arrays
 
 import (
-	"errors"
+	"github.com/StrikerSK/go-arrays/arrays/exception"
 	"log"
 	"reflect"
 )
@@ -13,10 +13,10 @@ func ValidateArray(input1, input2 interface{}) (err error) {
 
 	if actualType.Kind() != expectedType.Kind() {
 		log.Printf("Actual type [%s] is not same as expected type [%s]\n", actualType.Name(), expectedType.Name())
-		err = errors.New(MismatchedTypeError)
+		return exception.NewMismatchException()
 	}
 
-	return
+	return nil
 }
 
 // CheckExpectedType - validates that data types are same
@@ -25,8 +25,8 @@ func CheckExpectedType(validatedInput interface{}, expectedKind reflect.Kind) (e
 
 	if inputType.Kind() != expectedKind {
 		log.Printf("Input type [%s] is not same as exptected type [%s]\n", inputType.Name(), expectedKind.String())
-		err = errors.New(MismatchedTypeError)
+		return exception.NewMismatchException()
 	}
 
-	return
+	return nil
 }

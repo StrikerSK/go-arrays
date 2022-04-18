@@ -2,7 +2,7 @@ package abstract
 
 import (
 	"errors"
-	"github.com/StrikerSK/go-arrays/arrays"
+	"github.com/StrikerSK/go-arrays/arrays/exception"
 	"log"
 	"reflect"
 )
@@ -31,12 +31,12 @@ func (r AbstractArray) validateType(searchedValue interface{}) error {
 
 	if paramType.Kind() == reflect.Struct || arrayType.Kind() == reflect.Struct {
 		log.Println("Struct cannot be used")
-		return errors.New(arrays.StructUseError)
+		return errors.New(exception.StructUseError)
 	}
 
 	if !isEqual {
 		log.Printf("Array type [%s] should equal parameter type [%s]\n", arrayType, paramType)
-		return errors.New(arrays.MismatchedTypeError)
+		return exception.NewMismatchException()
 	}
 
 	return nil
@@ -53,13 +53,13 @@ func (r AbstractArray) FindIndex(searchedValue interface{}) (int, error) {
 		}
 	}
 
-	return -1, errors.New(arrays.NotFoundError)
+	return -1, exception.NewNotFoundException()
 }
 
 func (r AbstractArray) IsPresent(searchedValue interface{}) (bool, error) {
 	index, err := r.FindIndex(searchedValue)
 
-	if err != nil && err.Error() != arrays.NotFoundError {
+	if err != nil && err.Error() != exception.NotFoundError {
 		return false, err
 	}
 
@@ -69,7 +69,7 @@ func (r AbstractArray) IsPresent(searchedValue interface{}) (bool, error) {
 func (r AbstractArray) GetByIndex(index int) (interface{}, error) {
 	if index > len(r) || index < 0 {
 		log.Println("Provided index parameter is out of bounds")
-		return 0, errors.New(arrays.OutOfBoundsError)
+		return 0, exception.NewOutOfBoundsException()
 	} else {
 		return r[index], nil
 	}
@@ -88,7 +88,7 @@ func (r *AbstractArray) RemoveByIndex(index int) error {
 
 	if index > sliceLength || index < 0 {
 		log.Println("Provided index parameter is out of bounds")
-		return errors.New(arrays.OutOfBoundsError)
+		return exception.NewOutOfBoundsException()
 	}
 
 	tmp := make([]interface{}, sliceLength)

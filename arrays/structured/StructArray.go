@@ -2,7 +2,7 @@ package structured
 
 import (
 	"errors"
-	"github.com/StrikerSK/go-arrays/arrays"
+	"github.com/StrikerSK/go-arrays/arrays/exception"
 	"log"
 )
 
@@ -39,13 +39,13 @@ func (r StructArray) FindIndex(searchedValue interface{}) (int, error) {
 		}
 	}
 
-	return -1, errors.New(arrays.NotFoundError)
+	return -1, exception.NewNotFoundException()
 }
 
 func (r StructArray) IsPresent(searchedValue interface{}) (bool, error) {
 	index, err := r.FindIndex(searchedValue)
 
-	if err != nil && err.Error() != arrays.NotFoundError {
+	if err != nil && err.Error() != exception.NotFoundError {
 		return false, err
 	}
 
@@ -55,7 +55,7 @@ func (r StructArray) IsPresent(searchedValue interface{}) (bool, error) {
 func (r StructArray) GetByIndex(index int) (interface{}, error) {
 	if index > len(r) || index < 0 {
 		log.Println("Provided index parameter is out of bounds")
-		return 0, errors.New(arrays.OutOfBoundsError)
+		return 0, exception.NewOutOfBoundsException()
 	} else {
 		return r[index], nil
 	}
@@ -65,7 +65,7 @@ func (r *StructArray) Add(newValue interface{}) error {
 	compatibleObj, ok := newValue.(IStruct)
 	if !ok {
 		log.Println("value is not of type IStruct")
-		return errors.New(arrays.MismatchedTypeError)
+		return exception.NewMismatchException()
 	}
 
 	*r = append(*r, compatibleObj)
@@ -77,7 +77,7 @@ func (r *StructArray) RemoveByIndex(index int) error {
 
 	if index > sliceLength || index < 0 {
 		log.Println("Provided index parameter is out of bounds")
-		return errors.New(arrays.OutOfBoundsError)
+		return exception.NewOutOfBoundsException()
 	}
 
 	tmp := make([]IStruct, sliceLength)

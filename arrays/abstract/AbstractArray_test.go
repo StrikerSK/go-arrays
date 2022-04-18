@@ -1,7 +1,7 @@
 package abstract
 
 import (
-	"github.com/StrikerSK/go-arrays/arrays"
+	"github.com/StrikerSK/go-arrays/arrays/exception"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -25,20 +25,21 @@ func Test_AbstractEqualType(t *testing.T) {
 func Test_AbstractStructParamType(t *testing.T) {
 	err := stringArray.validateType(testStruct{Name: "Foo"})
 	assert.NotNil(t, err)
-	assert.Equal(t, arrays.StructUseError, err.Error())
+	assert.Equal(t, exception.StructUseError, err.Error())
 }
 
 func Test_AbstractStructArrayType(t *testing.T) {
 	s := AbstractArray{testStruct{Name: "Foo"}, testStruct{Name: "Bar"}}
 	err := s.validateType("Foo")
 	assert.NotNil(t, err)
-	assert.Equal(t, arrays.StructUseError, err.Error())
+	assert.Equal(t, exception.StructUseError, err.Error())
 }
 
 func Test_AbstractNonEqualType(t *testing.T) {
 	err := stringArray.validateType(5)
 	assert.NotNil(t, err)
-	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
+	assert.Error(t, err)
+	assert.Equal(t, exception.MismatchedTypeError, err.Error())
 }
 
 func Test_AbstractArraySearchElementFound(t *testing.T) {
@@ -56,6 +57,8 @@ func Test_AbstractArraySearchElementNotFound(t *testing.T) {
 func Test_AbstractArraySearchIncompatibleType(t *testing.T) {
 	output, err := stringArray.IsPresent(999)
 	assert.Error(t, err)
+	assert.Equal(t, err.Error(), exception.MismatchedTypeError)
+
 	assert.False(t, output)
 }
 
@@ -69,7 +72,7 @@ func Test_StringArrayIndexSearchNotFound(t *testing.T) {
 	output, err := stringArray.FindIndex("Hello")
 
 	assert.NotNil(t, err)
-	assert.Equal(t, arrays.NotFoundError, err.Error())
+	assert.Equal(t, exception.NotFoundError, err.Error())
 	assert.Equal(t, -1, output)
 }
 
@@ -100,7 +103,7 @@ func Test_GetByLastIndex(t *testing.T) {
 func Test_GetByIndexNotFound(t *testing.T) {
 	_, err := stringArray.GetByIndex(10)
 	assert.Error(t, err)
-	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
+	assert.Equal(t, exception.OutOfBoundsError, err.Error())
 }
 
 func Test_AddToSlice(t *testing.T) {
@@ -118,7 +121,7 @@ func Test_AddToSliceIncompatible(t *testing.T) {
 	newValue := 55
 	err := stringArray.Add(newValue)
 	assert.NotNil(t, err)
-	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
+	assert.Equal(t, exception.MismatchedTypeError, err.Error())
 }
 
 func Test_RemoveFromSlice(t *testing.T) {
@@ -133,5 +136,5 @@ func Test_RemoveFromSlice(t *testing.T) {
 func Test_RemoveFromSliceOutOfBounds(t *testing.T) {
 	err := stringArray.RemoveByIndex(10)
 	assert.NotNil(t, err)
-	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
+	assert.Equal(t, exception.OutOfBoundsError, err.Error())
 }

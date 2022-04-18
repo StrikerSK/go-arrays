@@ -1,7 +1,7 @@
 package string
 
 import (
-	"github.com/StrikerSK/go-arrays/arrays"
+	"github.com/StrikerSK/go-arrays/arrays/exception"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -42,7 +42,7 @@ func Test_StringArrayIndexZeroResults(t *testing.T) {
 	output, err := testStringArray.FindIndex("Out")
 
 	assert.NotNil(t, err)
-	assert.Equal(t, arrays.NotFoundError, err.Error())
+	assert.Equal(t, exception.NotFoundError, err.Error())
 	assert.Equal(t, -1, output)
 }
 
@@ -67,7 +67,7 @@ func Test_GetByLastIndex(t *testing.T) {
 func Test_GetByIndexNotFound(t *testing.T) {
 	_, err := testStringArray.GetByIndex(10)
 	assert.Error(t, err)
-	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
+	assert.Equal(t, exception.OutOfBoundsError, err.Error())
 }
 
 func Test_AddToSlice(t *testing.T) {
@@ -85,7 +85,7 @@ func Test_AddToSliceIncompatible(t *testing.T) {
 	newValue := 55
 	err := testStringArray.Add(newValue)
 	assert.NotNil(t, err)
-	assert.Equal(t, arrays.MismatchedTypeError, err.Error())
+	assert.Equal(t, exception.MismatchedTypeError, err.Error())
 }
 
 func Test_RemoveFromSlice(t *testing.T) {
@@ -100,5 +100,5 @@ func Test_RemoveFromSlice(t *testing.T) {
 func Test_RemoveFromSliceOutOfBounds(t *testing.T) {
 	err := testStringArray.RemoveByIndex(10)
 	assert.NotNil(t, err)
-	assert.Equal(t, arrays.OutOfBoundsError, err.Error())
+	assert.Equal(t, exception.OutOfBoundsError, err.Error())
 }
